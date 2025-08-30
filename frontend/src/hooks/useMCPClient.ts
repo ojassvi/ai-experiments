@@ -12,25 +12,20 @@ export const useMCPClient = () => {
 
   // Send message to MCP server
   const sendMessage = useCallback(async (message: string): Promise<MCPResponse> => {
-    try {
-      const response = await fetch('/api/mcp/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ message }),
-      });
+    const response = await fetch('/api/mcp/chat', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ message }),
+    });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      // Log error for debugging (in production, this could be sent to a logging service)
-      throw error;
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
+
+    const data = await response.json();
+    return data;
   }, []);
 
   // Check connection on mount and set up interval
