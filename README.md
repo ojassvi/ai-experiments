@@ -119,11 +119,6 @@ ENCRYPTION_KEY=your-32-char-encryption-key
 ### Output
 The system automatically:
 
-1. **🎨 Creates a Poster** (Canva)
-   - Generates design specifications using AI
-   - Creates poster with appropriate colors and layout
-   - Returns shareable link
-
 2. **📱 Sends WhatsApp Message**
    - Generates casual, friendly message
    - Sends via Twilio WhatsApp Business API
@@ -141,12 +136,6 @@ The system automatically:
 - **Automatic Fallback**: Seamlessly switch providers if one fails
 - **Real-time Switching**: Change providers via API endpoints
 - **Status Monitoring**: View current provider and availability
-
-### 1. `create_poster`
-- **Purpose**: Create professional yoga event posters
-- **Input**: Event description
-- **Output**: Canva poster URL
-- **AI Enhancement**: Intelligent design suggestions
 
 ### 2. `generate_whatsapp_message`
 - **Purpose**: Create and send WhatsApp messages
@@ -258,9 +247,6 @@ Ensure all required environment variables are set in production:
 - `AI_FALLBACK_PROVIDER` (fallback provider)
 - `OPENAI_API_KEY` (if using OpenAI)
 - `PERPLEXITY_API_KEY` (if using Perplexity AI)
-- `TWILIO_ACCOUNT_SID`
-- `TWILIO_AUTH_TOKEN`
-- `CANVA_API_KEY`
 - `ENCRYPTION_KEY`
 
 ## 🔮 Future Enhancements
@@ -294,8 +280,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 ## 🙏 Acknowledgments
 
 - OpenAI for GPT-4 integration
-- Twilio for WhatsApp Business API
-- Canva for design API
 - React and Vite communities
 - Tailwind CSS for beautiful UI components
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { MessageType } from '../types';
-import { CheckCircle, AlertCircle, Clock, ExternalLink, FileText, MessageSquare } from 'lucide-react';
+import { CheckCircle, AlertCircle, Clock, FileText, MessageSquare } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 

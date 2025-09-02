@@ -213,12 +213,21 @@ Just tell me what you need, and I'll use the right tools to help you!`,
         {/* Input Form */}
         <form onSubmit={handleSubmit} className="space-y-4 mt-auto">
           <div className="relative">
-            <input
-              type="text"
+            <textarea
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              placeholder="Describe your yoga event or announcement..."
-              className="w-full px-4 py-3 pr-12 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-base placeholder-gray-500 dark:placeholder-gray-400"
+              onKeyDown={(e) => {
+                if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+                  e.preventDefault();
+                  if (!isProcessing && isConnected && input.trim()) {
+                    handleSubmit(e);
+                  }
+                }
+              }}
+              placeholder="Describe your yoga event or announcement...
+You can write multiple lines for detailed descriptions..."
+              rows={3}
+              className="w-full px-4 py-3 pr-12 border-2 border-gray-200 dark:border-gray-700 rounded-xl bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all duration-200 text-base placeholder-gray-500 dark:placeholder-gray-400 resize-none"
               disabled={isProcessing || !isConnected}
             />
             <div className="absolute inset-y-0 right-0 pr-3 flex items-center">

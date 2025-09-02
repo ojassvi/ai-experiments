@@ -104,7 +104,6 @@ Message: "${message}"
 
 Possible intents:
 1. "chat" - User wants to have a conversation, ask questions, or get information
-
 3. "post_message" - User wants to send/post a message to WhatsApp or social media
 4. "create_blog" - User wants to create a blog post, article, or written content
 5. "workflow" - User wants to do multiple things or create a complete workflow
@@ -284,7 +283,7 @@ Keep your response friendly, professional, and focused on yoga/wellness content 
       
       Requirements:
       - Casual, friendly tone
-      - Keep under 160 characters if possible
+      - Keep under 300 characters if possible
       - Include key event details
       - Add a call-to-action
       - Use emojis appropriately
