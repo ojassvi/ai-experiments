@@ -4,14 +4,22 @@ import { MCPService } from '../services/mcp-service';
 
 const router = Router();
 const settingsService = new SettingsService();
-const mcpService = new MCPService();
+let mcpService: MCPService | null = null;
+
+// Lazy initialization of MCPService
+const getMCPService = (): MCPService => {
+  if (!mcpService) {
+    mcpService = new MCPService();
+  }
+  return mcpService;
+};
 
 // Health check endpoint
 router.get('/health', async (req: Request, res: Response) => {
   try {
     const envStatus = await settingsService.getEnvironmentSettings();
-    const aiStatus = mcpService.getAIProviderStatus();
-    const currentAIProvider = mcpService.getCurrentAIProvider();
+    const aiStatus = getMCPService().getAIProviderStatus();
+    const currentAIProvider = getMCPService().getCurrentAIProvider();
     
     const healthStatus = {
       status: 'healthy',

@@ -2,15 +2,23 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import dotenv from 'dotenv';
+import path from 'path';
 import { mcpRouter } from './routes/mcp';
 import { settingsRouter } from './routes/settings';
 import { healthRouter } from './routes/health';
 
-// Load environment variables
-dotenv.config();
+// Load environment variables from backend directory
+dotenv.config({ path: path.resolve(__dirname, '../.env') });
+
+// Debug: Log environment variables
+console.log('🔍 Debug: Environment variables loaded:');
+console.log('🔍 PERPLEXITY_API_KEY:', process.env.PERPLEXITY_API_KEY ? '✅ Set' : '❌ Not set');
+console.log('🔍 OPENAI_API_KEY:', process.env.OPENAI_API_KEY ? '✅ Set' : '❌ Not set');
+console.log('🔍 AI_PROVIDER:', process.env.AI_PROVIDER || 'Not set');
+console.log('🔍 AI_FALLBACK_PROVIDER:', process.env.AI_FALLBACK_PROVIDER || 'Not set');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8080;
 
 // Middleware
 app.use(helmet());

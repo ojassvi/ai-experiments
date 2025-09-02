@@ -3,7 +3,15 @@ import { MCPService } from '../services/mcp-service';
 import { TaskResult } from '../types';
 
 const router = Router();
-const mcpService = new MCPService();
+let mcpService: MCPService | null = null;
+
+// Lazy initialization of MCPService
+const getMCPService = (): MCPService => {
+  if (!mcpService) {
+    mcpService = new MCPService();
+  }
+  return mcpService;
+};
 
 router.post('/chat', async (req: Request, res: Response) => {
   try {
@@ -45,21 +53,21 @@ router.post('/chat', async (req: Request, res: Response) => {
       try {
         // Task 1: Create Poster
         console.log('🎨 Starting poster creation...');
-        const posterResult = await mcpService.createPoster(message);
+        const posterResult = await getMCPService().createPoster(message);
         tasks[0].status = 'completed';
         tasks[0].metadata = { posterUrl: posterResult.url };
         console.log('✅ Poster created successfully');
 
         // Task 2: Generate WhatsApp Message
         console.log('📱 Starting WhatsApp message generation...');
-        const whatsappResult = await mcpService.generateWhatsAppMessage(message);
+        const whatsappResult = await getMCPService().generateWhatsAppMessage(message);
         tasks[1].status = 'completed';
         tasks[1].metadata = { whatsappMessage: whatsappResult.message };
         console.log('✅ WhatsApp message generated and sent');
 
         // Task 3: Generate Markdown Post
         console.log('📝 Starting markdown post generation...');
-        const markdownResult = await mcpService.generateMarkdownPost(message);
+        const markdownResult = await getMCPService().generateMarkdownPost(message);
         tasks[2].status = 'completed';
         tasks[2].metadata = { markdownFile: markdownResult.filename };
         console.log('✅ Markdown post generated');
@@ -167,8 +175,8 @@ router.get('/capabilities', (req: Request, res: Response) => {
 // Get AI provider status
 router.get('/ai-status', (req: Request, res: Response) => {
   try {
-    const providerStatus = mcpService.getAIProviderStatus();
-    const currentProvider = mcpService.getCurrentAIProvider();
+    const providerStatus = getMCPService().getAIProviderStatus();
+    const currentProvider = getMCPService().getCurrentAIProvider();
     
     res.json({
       currentProvider,
@@ -190,11 +198,11 @@ router.post('/ai-switch', (req: Request, res: Response) => {
       return res.status(400).json({ error: 'Invalid provider. Must be "openai" or "perplexity"' });
     }
     
-    mcpService.switchAIProvider(provider as 'openai' | 'perplexity');
+    getMCPService().switchAIProvider(provider as 'openai' | 'perplexity');
     
     res.json({
       message: `Switched to ${provider} provider`,
-      currentProvider: mcpService.getCurrentAIProvider(),
+      currentProvider: getMCPService().getCurrentAIProvider(),
       timestamp: new Date().toISOString(),
     });
   } catch (error) {

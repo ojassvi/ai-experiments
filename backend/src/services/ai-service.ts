@@ -1,5 +1,6 @@
 import OpenAI from 'openai';
-import { Perplexity } from '@perplexity/ai';
+import { generateText } from 'ai';
+import { perplexity } from '@ai-sdk/perplexity';
 
 export type AIProvider = 'openai' | 'perplexity';
 
@@ -12,7 +13,6 @@ export interface AIServiceConfig {
 
 export class AIService {
   private openai: OpenAI | null = null;
-  private perplexity: Perplexity | null = null;
   private config: AIServiceConfig;
   private currentProvider: AIProvider;
 
@@ -32,18 +32,6 @@ export class AIService {
         console.log('✅ OpenAI service initialized');
       } catch (error) {
         console.warn('⚠️ Failed to initialize OpenAI:', error);
-      }
-    }
-
-    // Initialize Perplexity
-    if (this.config.perplexityApiKey) {
-      try {
-        this.perplexity = new Perplexity({
-          apiKey: this.config.perplexityApiKey,
-        });
-        console.log('✅ Perplexity AI service initialized');
-      } catch (error) {
-        console.warn('⚠️ Failed to initialize Perplexity:', error);
       }
     }
 
@@ -67,17 +55,17 @@ export class AIService {
   private isProviderAvailable(provider: AIProvider): boolean {
     switch (provider) {
       case 'openai':
-        return this.openai !== null;
+        return this.config.openaiApiKey !== undefined && this.openai !== null;
       case 'perplexity':
-        return this.perplexity !== null;
+        return this.config.perplexityApiKey !== undefined;
       default:
         return false;
     }
   }
 
   private getAvailableProvider(): AIProvider | null {
-    if (this.openai) return 'openai';
-    if (this.perplexity) return 'perplexity';
+    if (this.config.openaiApiKey && this.openai) return 'openai';
+    if (this.config.perplexityApiKey) return 'perplexity';
     return null;
   }
 
@@ -135,32 +123,38 @@ export class AIService {
   }
 
   private async generateWithPerplexity(prompt: string): Promise<string> {
-    if (!this.perplexity) {
-      throw new Error('Perplexity AI service not initialized');
+    if (!this.config.perplexityApiKey) {
+      throw new Error('Perplexity API key not configured');
     }
 
-    const response = await this.perplexity.chat({
-      model: 'llama-3.1-sonar-small-128k-online',
-      messages: [
-        {
-          role: 'system',
-          content: 'You are a professional content creator specializing in yoga and wellness content. Create engaging, informative, and well-structured content based on the user\'s requirements.',
-        },
-        {
-          role: 'user',
-          content: prompt,
-        },
-      ],
-      max_tokens: 1000,
-      temperature: 0.7,
-    });
+    try {
+      // Set the API key as an environment variable for the AI SDK
+      const originalApiKey = process.env.PERPLEXITY_API_KEY;
+      process.env.PERPLEXITY_API_KEY = this.config.perplexityApiKey;
 
-    const content = response.choices[0]?.message?.content;
-    if (!content) {
-      throw new Error('No content generated from Perplexity AI');
+      const { text } = await generateText({
+        model: perplexity('llama-3.1-sonar-small-128k-online'),
+        prompt: `You are a professional content creator specializing in yoga and wellness content. Create engaging, informative, and well-structured content based on the user's requirements.
+
+User request: ${prompt}`,
+      });
+
+      // Restore the original API key
+      if (originalApiKey) {
+        process.env.PERPLEXITY_API_KEY = originalApiKey;
+      } else {
+        delete process.env.PERPLEXITY_API_KEY;
+      }
+
+      if (!text) {
+        throw new Error('No content generated from Perplexity AI');
+      }
+
+      return text;
+    } catch (error) {
+      console.error('Perplexity AI generation error:', error);
+      throw new Error(`Failed to generate content with Perplexity: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
-
-    return content;
   }
 
   async generatePosterContent(eventDescription: string): Promise<{
@@ -255,7 +249,7 @@ export class AIService {
   getProviderStatus(): Record<AIProvider, boolean> {
     return {
       openai: this.openai !== null,
-      perplexity: this.perplexity !== null,
+      perplexity: this.config.perplexityApiKey !== undefined,
     };
   }
 

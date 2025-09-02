@@ -193,7 +193,8 @@ export class WhatsAppService {
         phoneNumber: phoneNumber,
       });
 
-      return validation.valid;
+      // If we get here without an error, validation was successful
+      return true;
     } catch (error) {
       console.error('Error validating phone number:', error);
       return this.basicPhoneValidation(phoneNumber);

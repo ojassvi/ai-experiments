@@ -7,7 +7,7 @@ A comprehensive MCP (Model Context Protocol) client + agent workflow that automa
 - **🎨 Canva Integration**: Automatically create professional posters for yoga events
 - **📱 WhatsApp Business API**: Send personalized messages to your community
 - **📝 Website Content**: Generate SEO-friendly markdown posts with frontmatter
-- **🤖 AI-Powered**: Uses OpenAI GPT-4 or Perplexity AI for intelligent content generation
+- **🤖 AI-Powered**: Uses AI SDK with OpenAI GPT-4 or Perplexity AI for intelligent content generation
 - **🌓 Dark/Light Mode**: Beautiful, responsive UI with system preference detection
 - **🔐 Secure**: Encrypted storage of API keys and sensitive data
 - **📱 Responsive**: Works seamlessly on desktop and mobile devices
@@ -18,12 +18,25 @@ A comprehensive MCP (Model Context Protocol) client + agent workflow that automa
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
 │   React Frontend│    │  Node.js Backend│    │  External APIs  │
 │                 │    │                 │    │                 │
-│ • Chat Interface│◄──►│ • MCP Server    │◄──►│ • OpenAI GPT-4  │
-│ • Settings Page │    │ • Task Orchestr.│    │ • Canva API     │
-│ • Dark/Light    │    │ • API Services  │    │ • Twilio WhatsApp│
-│ • Responsive UI │    │ • File Storage  │    │ • File System   │
+│ • Chat Interface│◄──►│ • MCP Server    │◄──►│ • AI SDK        │
+│ • Settings Page │    │ • Task Orchestr.│    │ • OpenAI GPT-4  │
+│ • Dark/Light    │    │ • API Services  │    │ • Perplexity AI │
+│ • Responsive UI │    │ • File Storage  │    │ • Canva API     │
+│                 │    │                 │    │ • Twilio WhatsApp│
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
+
+## 🤖 AI SDK Integration
+
+This project now uses the [AI SDK](https://ai-sdk.dev/) for seamless integration with multiple AI providers:
+
+- **Unified API**: Single interface for OpenAI and Perplexity AI
+- **Automatic Fallback**: Seamlessly switches between providers if one fails
+- **Type Safety**: Full TypeScript support with IntelliSense
+- **Model Flexibility**: Easy switching between different AI models
+- **Performance**: Optimized for production use
+
+For detailed AI SDK setup and usage, see [backend/README-AI-SDK.md](backend/README-AI-SDK.md).
 
 ## 🚀 Quick Start
 
@@ -61,7 +74,7 @@ npm run dev
 
 This starts both:
 - Frontend: http://localhost:3000
-- Backend: http://localhost:5000
+- Backend: http://localhost:8080
 
 ## ⚙️ Configuration
 

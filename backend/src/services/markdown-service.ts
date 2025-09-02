@@ -240,7 +240,7 @@ To secure your spot in this workshop, please contact us or register through our 
   async getAllPosts(): Promise<any[]> {
     try {
       const files = await fs.readdir(this.contentDir);
-      const posts = [];
+      const posts: Array<{ filename: string; content: string; date?: string; [key: string]: any }> = [];
       
       for (const file of files) {
         if (file.endsWith('.md')) {
@@ -257,7 +257,11 @@ To secure your spot in this workshop, please contact us or register through our 
       }
       
       // Sort by date (newest first)
-      posts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      posts.sort((a, b) => {
+        const dateA = a.date ? new Date(a.date).getTime() : 0;
+        const dateB = b.date ? new Date(b.date).getTime() : 0;
+        return dateB - dateA;
+      });
       
       return posts;
     } catch (error) {
