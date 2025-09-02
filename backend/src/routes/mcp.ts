@@ -49,20 +49,7 @@ router.get('/capabilities', (req: Request, res: Response) => {
     name: 'yoga-studio-workflow',
     version: '1.0.0',
     capabilities: [
-      {
-        name: 'create_poster',
-        description: 'Create a poster in Canva using the provided event description',
-        parameters: {
-          type: 'object',
-          properties: {
-            description: {
-              type: 'string',
-              description: 'Description of the yoga event or announcement',
-            },
-          },
-          required: ['description'],
-        },
-      },
+
       {
         name: 'generate_whatsapp_message',
         description: 'Generate and send a WhatsApp message for the event',
@@ -151,17 +138,14 @@ router.post('/workflow', async (req: Request, res: Response) => {
     
     res.json({
       message: `🎉 Complete workflow completed successfully! I've created:\n\n` +
-        `✅ **Poster**: [View your poster](${result.poster.url})\n` +
         `✅ **WhatsApp Message**: Sent to your configured number\n` +
         `✅ **Website Post**: Created as ${result.markdown.filename}\n\n` +
         `All content has been generated and distributed across your channels.`,
       tasks: [
-        { type: 'poster', status: 'completed', url: result.poster.url },
         { type: 'whatsapp', status: 'completed', message: 'Message sent successfully' },
         { type: 'blog', status: 'completed', filename: result.markdown.filename }
       ],
       metadata: {
-        posterUrl: result.poster.url,
         markdownFile: result.markdown.filename
       },
       timestamp: new Date().toISOString(),

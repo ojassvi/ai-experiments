@@ -1,12 +1,12 @@
 import { AIService, AIProvider } from "./ai-service";
-import { CanvaService } from "./canva-service";
+
 import { WhatsAppService } from "./whatsapp-service";
 import { MarkdownService } from "./markdown-service";
 import { SettingsService } from "./settings-service";
 
 export class MCPService {
   private aiService: AIService;
-  private canvaService: CanvaService;
+
   private whatsappService: WhatsAppService;
   private markdownService: MarkdownService;
   private settingsService: SettingsService;
@@ -21,7 +21,7 @@ export class MCPService {
     };
 
     this.aiService = new AIService(aiConfig);
-    this.canvaService = new CanvaService();
+
     this.whatsappService = new WhatsAppService();
     this.markdownService = new MarkdownService();
     this.settingsService = new SettingsService();
@@ -90,7 +90,7 @@ export class MCPService {
   async analyzeUserIntent(message: string): Promise<{
     intent:
       | "chat"
-      | "create_poster"
+
       | "post_message"
       | "create_blog"
       | "workflow";
@@ -104,7 +104,7 @@ Message: "${message}"
 
 Possible intents:
 1. "chat" - User wants to have a conversation, ask questions, or get information
-2. "create_poster" - User wants to create a poster, flyer, or visual content
+
 3. "post_message" - User wants to send/post a message to WhatsApp or social media
 4. "create_blog" - User wants to create a blog post, article, or written content
 5. "workflow" - User wants to do multiple things or create a complete workflow
@@ -116,7 +116,7 @@ Return a JSON object with:
   "description": "brief explanation of why this intent was chosen"
 }
 
-Focus on keywords like: poster, flyer, design, visual (for poster); message, send, post, share (for message); blog, article, write, content (for blog); multiple, all, everything, workflow (for workflow).`;
+Focus on keywords like: message, send, post, share (for message); blog, article, write, content (for blog); multiple, all, everything, workflow (for workflow).`;
 
       const response = await this.aiService.generateContent(intentPrompt);
 
@@ -132,16 +132,6 @@ Focus on keywords like: poster, flyer, design, visual (for poster); message, sen
         // Fallback: simple keyword matching
         const lowerMessage = message.toLowerCase();
         if (
-          lowerMessage.includes("poster") ||
-          lowerMessage.includes("flyer") ||
-          lowerMessage.includes("design")
-        ) {
-          return {
-            intent: "create_poster",
-            confidence: 0.8,
-            description: "Keywords suggest poster creation",
-          };
-        } else if (
           lowerMessage.includes("message") ||
           lowerMessage.includes("send") ||
           lowerMessage.includes("post")
@@ -203,8 +193,7 @@ Focus on keywords like: poster, flyer, design, visual (for poster); message, sen
 
       // Route to appropriate handler based on intent
       switch (intent.intent) {
-        case "create_poster":
-          return await this.handlePosterCreation(message);
+
 
         case "post_message":
           return await this.handleMessagePosting(message);
@@ -229,13 +218,7 @@ Focus on keywords like: poster, flyer, design, visual (for poster); message, sen
     }
   }
 
-  private async handlePosterCreation(message: string) {
-    const posterResult = await this.createPoster(message);
-    return {
-      response: `🎨 I've created a poster for you! You can view it here: ${posterResult.url}\n\nI used AI to generate the design based on your description and created it in Canva. The poster includes professional styling with wellness-focused colors and layout.`,
-      metadata: { posterUrl: posterResult.url },
-    };
-  }
+
 
   private async handleMessagePosting(message: string) {
     const whatsappResult = await this.generateWhatsAppMessage(message);
@@ -256,9 +239,8 @@ Focus on keywords like: poster, flyer, design, visual (for poster); message, sen
   private async handleCompleteWorkflow(message: string) {
     const workflowResult = await this.processWorkflow(message);
     return {
-      response: `🎉 Complete workflow completed! I've created everything you need:\n\n✅ **Poster**: [View your poster](${workflowResult.poster.url})\n✅ **WhatsApp Message**: Sent to your configured number\n✅ **Website Post**: Created as ${workflowResult.markdown.filename}\n\nAll content has been generated and distributed across your channels. Your yoga studio event is now fully promoted!`,
+      response: `🎉 Complete workflow completed! I've created everything you need:\n\n✅ **WhatsApp Message**: Sent to your configured number\n✅ **Website Post**: Created as ${workflowResult.markdown.filename}\n\nAll content has been generated and distributed across your channels. Your yoga studio event is now fully promoted!`,
       tasks: [
-        { type: "poster", status: "completed", url: workflowResult.poster.url },
         {
           type: "whatsapp",
           status: "completed",
@@ -279,7 +261,7 @@ Focus on keywords like: poster, flyer, design, visual (for poster); message, sen
       .generateContent(`You are a helpful yoga studio content assistant. The user said: "${message}". 
 
 Provide a helpful, informative response. If they seem to want to create content, suggest using specific commands like:
-- "Create a poster for [event description]" for visual content
+
 - "Send a message about [event]" for WhatsApp messages  
 - "Write a blog post about [topic]" for written content
 - "Create everything for [event]" for complete workflow
@@ -291,39 +273,7 @@ Keep your response friendly, professional, and focused on yoga/wellness content 
     };
   }
 
-  async createPoster(description: string): Promise<{ url: string }> {
-    try {
-      // Generate poster content using LLM
-      const posterPrompt = `Create a yoga studio poster for: ${description}
-      
-      Requirements:
-      - Professional and inviting design
-      - Include event details clearly
-      - Use calming, wellness-focused language
-      - Suggest appropriate colors and layout
-      
-      Return a JSON object with:
-      - title: Event title
-      - subtitle: Brief description
-      - details: Key event details
-      - colors: Suggested color scheme
-      - layout: Layout suggestions`;
 
-      const posterContent = await this.aiService.generateContent(posterPrompt);
-
-      // Create poster in Canva
-      const posterUrl = await this.canvaService.createPoster(posterContent);
-
-      return { url: posterUrl };
-    } catch (error) {
-      console.error("Error creating poster:", error);
-      throw new Error(
-        `Failed to create poster: ${
-          error instanceof Error ? error.message : "Unknown error"
-        }`
-      );
-    }
-  }
 
   async generateWhatsAppMessage(
     description: string
@@ -396,20 +346,17 @@ Keep your response friendly, professional, and focused on yoga/wellness content 
   }
 
   async processWorkflow(description: string): Promise<{
-    poster: { url: string };
     whatsapp: { message: string };
     markdown: { filename: string };
   }> {
     try {
       // Process all tasks in parallel for better performance
-      const [posterResult, whatsappResult, markdownResult] = await Promise.all([
-        this.createPoster(description),
+      const [whatsappResult, markdownResult] = await Promise.all([
         this.generateWhatsAppMessage(description),
         this.generateMarkdownPost(description),
       ]);
 
       return {
-        poster: posterResult,
         whatsapp: whatsappResult,
         markdown: markdownResult,
       };

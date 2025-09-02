@@ -45,7 +45,7 @@ app.use('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`🚀 MCP Server running on port ${PORT}`);
   console.log(`📱 WhatsApp integration: ${process.env.TWILIO_ACCOUNT_SID ? '✅ Configured' : '❌ Not configured'}`);
-  console.log(`🎨 Canva integration: ${process.env.CANVA_API_KEY ? '✅ Configured' : '❌ Not configured'}`);
+
   console.log(`🤖 AI Providers:`);
   console.log(`   OpenAI: ${process.env.OPENAI_API_KEY ? '✅ Configured' : '❌ Not configured'}`);
   console.log(`   Perplexity: ${process.env.PERPLEXITY_API_KEY ? '✅ Configured' : '❌ Not configured'}`);

@@ -192,7 +192,7 @@ User request: ${prompt}`,
     colors: string[];
     layout: string;
   }> {
-    const prompt = `Create a yoga studio poster design specification for: ${eventDescription}
+    const prompt = `Create a yoga studio content specification for: ${eventDescription}
     
     Return a valid JSON object with these exact fields:
     {

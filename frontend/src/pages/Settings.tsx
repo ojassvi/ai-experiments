@@ -9,13 +9,11 @@ const Settings: React.FC = () => {
       sid: '',
       phoneNumber: '',
     },
-    canva: {
-      apiKey: '',
-    },
+
   });
 
   const [showWhatsAppKey, setShowWhatsAppKey] = useState(false);
-  const [showCanvaKey, setShowCanvaKey] = useState(false);
+
   const [isSaving, setIsSaving] = useState(false);
   const [saveStatus, setSaveStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
@@ -98,7 +96,7 @@ const Settings: React.FC = () => {
               API Configuration
             </h2>
             <p className="text-gray-600 dark:text-gray-400">
-              Configure your API keys and credentials for WhatsApp Business and Canva integration.
+              Configure your API keys and credentials for WhatsApp Business integration.
             </p>
           </div>
         </div>
@@ -166,36 +164,7 @@ const Settings: React.FC = () => {
             </div>
           </div>
 
-          {/* Canva Configuration */}
-          <div>
-            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-              <span className="w-8 h-8 bg-blue-100 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 rounded-lg flex items-center justify-center mr-3">
-                🎨
-              </span>
-              Canva API
-            </h3>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                API Key
-              </label>
-              <div className="relative">
-                <input
-                  type={showCanvaKey ? 'text' : 'password'}
-                  value={settings.canva.apiKey}
-                  onChange={(e) => handleInputChange('canva', 'apiKey', e.target.value)}
-                  className="input-field pr-10"
-                  placeholder="Enter your Canva API key"
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowCanvaKey(!showCanvaKey)}
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-                >
-                  {showCanvaKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                </button>
-              </div>
-            </div>
-          </div>
+
         </div>
 
         {/* Save Button */}
@@ -244,10 +213,7 @@ const Settings: React.FC = () => {
             <strong>WhatsApp Business API:</strong> You'll need a Twilio account with WhatsApp Business API access. 
             Get your API key and SID from the Twilio Console.
           </p>
-          <p>
-            <strong>Canva API:</strong> Access the Canva Developer Portal to create an app and get your API key 
-            for poster generation.
-          </p>
+
           <p>
             <strong>Security:</strong> All API keys are encrypted and stored securely on the backend. 
             They are never exposed in the frontend code.

@@ -8,9 +8,6 @@ interface Settings {
     sid: string;
     phoneNumber: string;
   };
-  canva: {
-    apiKey: string;
-  };
 }
 
 export class SettingsService {
@@ -49,9 +46,6 @@ export class SettingsService {
         sid: '',
         phoneNumber: '',
       },
-      canva: {
-        apiKey: '',
-      },
     };
   }
 
@@ -80,16 +74,7 @@ export class SettingsService {
     }
   }
 
-  async updateCanvaSettings(canva: Settings['canva']): Promise<void> {
-    try {
-      const currentSettings = await this.getSettings();
-      currentSettings.canva = canva;
-      await this.saveSettings(currentSettings);
-    } catch (error) {
-      console.error('Error updating Canva settings:', error);
-      throw error;
-    }
-  }
+
 
   async validateSettings(settings: Settings): Promise<{ valid: boolean; errors: string[] }> {
     const errors: string[] = [];
@@ -107,10 +92,7 @@ export class SettingsService {
       errors.push('Invalid phone number format (must include country code)');
     }
 
-    // Validate Canva settings
-    if (settings.canva.apiKey && !this.isValidApiKey(settings.canva.apiKey)) {
-      errors.push('Invalid Canva API key format');
-    }
+
 
     return {
       valid: errors.length === 0,
@@ -163,12 +145,10 @@ export class SettingsService {
   async getEnvironmentSettings(): Promise<{
     openai: boolean;
     twilio: boolean;
-    canva: boolean;
   }> {
     return {
       openai: !!process.env.OPENAI_API_KEY,
       twilio: !!(process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN),
-      canva: !!process.env.CANVA_API_KEY,
     };
   }
 
@@ -206,9 +186,7 @@ export class SettingsService {
           sid: '',
           phoneNumber: '',
         },
-        canva: {
-          apiKey: '',
-        },
+
       };
       
       await this.saveSettings(defaultSettings);

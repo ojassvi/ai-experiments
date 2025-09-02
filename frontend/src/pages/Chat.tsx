@@ -36,9 +36,9 @@ const Chat: React.FC = () => {
 
 Here are some things you can ask me to do:
 
-🎨 **Create Visual Content:**
-- "Create a poster for a beginner yoga workshop on Saturday"
-- "Design a flyer for our meditation retreat"
+📝 **Create Content:**
+- "Create content for a beginner yoga workshop on Saturday"
+- "Write about our meditation retreat"
 
 📱 **Send Messages:**
 - "Send a WhatsApp message about our new class schedule"

@@ -33,7 +33,7 @@ router.get('/health', async (req: Request, res: Response) => {
       services: {
         openai: envStatus.openai ? 'configured' : 'not_configured',
         twilio: envStatus.twilio ? 'configured' : 'not_configured',
-        canva: envStatus.canva ? 'configured' : 'not_configured',
+
       },
       ai: {
         currentProvider: currentAIProvider,

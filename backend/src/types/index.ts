@@ -1,11 +1,10 @@
 export interface TaskResult {
   id: string;
-  type: 'create_poster' | 'generate_whatsapp_message' | 'generate_markdown_post';
+  type: 'generate_whatsapp_message' | 'generate_markdown_post';
   status: 'completed' | 'failed' | 'processing';
   result?: any;
   error?: string;
   metadata?: {
-    posterUrl?: string;
     whatsappMessage?: string;
     markdownFile?: string;
     [key: string]: any;
@@ -23,9 +22,6 @@ export interface Settings {
     sid: string;
     phoneNumber: string;
   };
-  canva: {
-    apiKey: string;
-  };
 }
 
 export interface APIConfig {
@@ -34,18 +30,9 @@ export interface APIConfig {
     sid: string;
     phoneNumber: string;
   };
-  canva: {
-    apiKey: string;
-  };
 }
 
-export interface PosterDesignSpec {
-  title: string;
-  subtitle: string;
-  details: string;
-  colors: string[];
-  layout: string;
-}
+
 
 export interface WhatsAppMessageResult {
   messageId: string;
@@ -64,7 +51,6 @@ export interface MarkdownPostResult {
 export interface EnvironmentStatus {
   openai: boolean;
   twilio: boolean;
-  canva: boolean;
 }
 
 export interface HealthStatus {
@@ -79,6 +65,5 @@ export interface HealthStatus {
   services: {
     openai: 'configured' | 'not_configured';
     twilio: 'configured' | 'not_configured';
-    canva: 'configured' | 'not_configured';
   };
 }

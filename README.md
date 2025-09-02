@@ -4,7 +4,7 @@ A comprehensive MCP (Model Context Protocol) client + agent workflow that automa
 
 ## 🎯 Features
 
-- **🎨 Canva Integration**: Automatically create professional posters for yoga events
+
 - **📱 WhatsApp Business API**: Send personalized messages to your community
 - **📝 Website Content**: Generate SEO-friendly markdown posts with frontmatter
 - **🤖 AI-Powered**: Uses AI SDK with OpenAI GPT-4 or Perplexity AI for intelligent content generation
@@ -21,7 +21,7 @@ A comprehensive MCP (Model Context Protocol) client + agent workflow that automa
 │ • Chat Interface│◄──►│ • MCP Server    │◄──►│ • AI SDK        │
 │ • Settings Page │    │ • Task Orchestr.│    │ • OpenAI GPT-4  │
 │ • Dark/Light    │    │ • API Services  │    │ • Perplexity AI │
-│ • Responsive UI │    │ • File Storage  │    │ • Canva API     │
+│ • Responsive UI │    │ • File Storage  │    
 │                 │    │                 │    │ • Twilio WhatsApp│
 └─────────────────┘    └─────────────────┘    └─────────────────┘
 ```
@@ -45,7 +45,7 @@ For detailed AI SDK setup and usage, see [backend/README-AI-SDK.md](backend/READ
 - Node.js 18+ and npm
 - OpenAI API key OR Perplexity AI API key (or both for fallback)
 - Twilio account (for WhatsApp Business API)
-- Canva Developer account (optional, for real poster creation)
+
 
 ### 1. Clone and Install
 
@@ -96,8 +96,7 @@ TWILIO_ACCOUNT_SID=ACyour-twilio-sid
 TWILIO_AUTH_TOKEN=your-twilio-auth-token
 TWILIO_WHATSAPP_NUMBER=+14155238886
 
-# Canva (Optional - falls back to simulation)
-CANVA_API_KEY=your-canva-api-key
+
 
 # Security
 ENCRYPTION_KEY=your-32-char-encryption-key
@@ -108,7 +107,7 @@ ENCRYPTION_KEY=your-32-char-encryption-key
 1. **OpenAI**: Get your API key from [OpenAI Platform](https://platform.openai.com/)
 2. **Perplexity AI**: Get your API key from [Perplexity AI](https://www.perplexity.ai/settings/api)
 3. **Twilio**: Sign up at [Twilio](https://www.twilio.com/) and enable WhatsApp Business API
-4. **Canva**: Apply for developer access at [Canva Developers](https://www.canva.dev/)
+
 
 ## 💡 Usage Example
 

@@ -1,11 +1,10 @@
 export interface TaskResult {
   id: string;
-  type: 'create_poster' | 'generate_whatsapp_message' | 'generate_markdown_post';
+  type: 'generate_whatsapp_message' | 'generate_markdown_post';
   status: 'completed' | 'failed' | 'processing';
   result?: unknown;
   error?: string;
   metadata?: {
-    posterUrl?: string;
     whatsappMessage?: string;
     markdownFile?: string;
     [key: string]: string | number | boolean | undefined;
@@ -19,7 +18,6 @@ export interface MessageType {
   timestamp: Date;
   tasks?: TaskResult[];
   metadata?: {
-    posterUrl?: string;
     whatsappMessage?: string;
     markdownFile?: string;
     [key: string]: string | number | boolean | undefined;
@@ -30,7 +28,6 @@ export interface MCPResponse {
   message: string;
   tasks: TaskResult[];
   metadata?: {
-    posterUrl?: string;
     whatsappMessage?: string;
     markdownFile?: string;
     [key: string]: string | number | boolean | undefined;
@@ -43,9 +40,6 @@ export interface Settings {
     sid: string;
     phoneNumber: string;
   };
-  canva: {
-    apiKey: string;
-  };
 }
 
 export interface APIConfig {
@@ -53,9 +47,6 @@ export interface APIConfig {
     apiKey: string;
     sid: string;
     phoneNumber: string;
-  };
-  canva: {
-    apiKey: string;
   };
 }
 

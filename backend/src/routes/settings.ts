@@ -16,9 +16,7 @@ router.get('/', async (req: Request, res: Response) => {
         sid: settings.whatsapp.sid ? '***configured***' : '',
         phoneNumber: settings.whatsapp.phoneNumber || '',
       },
-      canva: {
-        apiKey: settings.canva.apiKey ? '***configured***' : '',
-      },
+
     };
     
     res.json(safeSettings);
@@ -82,35 +80,7 @@ router.put('/whatsapp', async (req: Request, res: Response) => {
   }
 });
 
-// Update Canva settings
-router.put('/canva', async (req: Request, res: Response) => {
-  try {
-    const canvaSettings = req.body;
-    
-    // Validate Canva settings
-    const currentSettings = await settingsService.getSettings();
-    const testSettings = {
-      ...currentSettings,
-      canva: canvaSettings,
-    };
-    
-    const validation = await settingsService.validateSettings(testSettings);
-    if (!validation.valid) {
-      return res.status(400).json({
-        error: 'Invalid Canva settings',
-        details: validation.errors,
-      });
-    }
-    
-    // Update Canva settings
-    await settingsService.updateCanvaSettings(canvaSettings);
-    
-    res.json({ message: 'Canva settings updated successfully' });
-  } catch (error) {
-    console.error('Error updating Canva settings:', error);
-    res.status(500).json({ error: 'Failed to update Canva settings' });
-  }
-});
+
 
 // Get environment status
 router.get('/status', async (req: Request, res: Response) => {

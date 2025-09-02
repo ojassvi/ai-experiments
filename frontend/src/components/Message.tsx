@@ -1,6 +1,6 @@
 import React from 'react';
 import { MessageType } from '../types';
-import { CheckCircle, AlertCircle, Clock, ExternalLink, FileText, MessageSquare, ImageIcon } from 'lucide-react';
+import { CheckCircle, AlertCircle, Clock, ExternalLink, FileText, MessageSquare } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -27,8 +27,6 @@ const Message: React.FC<MessageProps> = ({ message }) => {
 
   const getTaskIcon = (type: string) => {
     switch (type) {
-      case 'create_poster':
-        return <ImageIcon className="w-4 h-4" />;
       case 'generate_whatsapp_message':
         return <MessageSquare className="w-4 h-4" />;
       case 'generate_markdown_post':
@@ -40,8 +38,6 @@ const Message: React.FC<MessageProps> = ({ message }) => {
 
   const getTaskTitle = (type: string) => {
     switch (type) {
-      case 'create_poster':
-        return 'Poster Creation';
       case 'generate_whatsapp_message':
         return 'WhatsApp Message';
       case 'generate_markdown_post':
@@ -173,23 +169,6 @@ const Message: React.FC<MessageProps> = ({ message }) => {
 
                 {task.status === 'completed' && task.metadata && (
                   <div className="space-y-3 pt-2 border-t border-gray-200 dark:border-gray-600">
-                    {task.type === 'create_poster' && task.metadata.posterUrl && (
-                      <div className="flex items-center justify-between p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
-                        <div className="flex items-center space-x-2">
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">🎨 Poster Created</span>
-                        </div>
-                        <a
-                          href={task.metadata.posterUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="inline-flex items-center space-x-1 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:from-blue-600 hover:to-purple-700 transition-all duration-200 shadow-sm hover:shadow-md"
-                        >
-                          <span>View Poster</span>
-                          <ExternalLink className="w-3 h-3" />
-                        </a>
-                      </div>
-                    )}
-
                     {task.type === 'generate_whatsapp_message' && task.metadata.whatsappMessage && (
                       <div className="p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600">
                         <div className="flex items-center space-x-2 mb-2">
