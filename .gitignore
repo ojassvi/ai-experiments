@@ -128,3 +128,5 @@ coverage/
 *.tgz
 *.tar.gz
 .cache/
+
+backend/content/

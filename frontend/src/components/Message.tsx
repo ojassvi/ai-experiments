@@ -1,6 +1,8 @@
 import React from 'react';
 import { MessageType } from '../types';
 import { CheckCircle, AlertCircle, Clock, ExternalLink, FileText, MessageSquare, ImageIcon } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 
 interface MessageProps {
   message: MessageType;
@@ -53,6 +55,65 @@ const Message: React.FC<MessageProps> = ({ message }) => {
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  const renderMessageContent = () => {
+    if (isUser) {
+      // User messages are always plain text
+      return <p className="text-sm">{message.content}</p>;
+    } else {
+      // AI messages may contain markdown, so render them properly
+      return (
+        <div className="chat-message-prose">
+          <ReactMarkdown 
+            remarkPlugins={[remarkGfm]}
+            components={{
+              // Customize link rendering to open in new tab
+              a: ({ node, ...props }: any) => (
+                <a 
+                  {...props} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-blue-600 dark:text-blue-400 hover:underline"
+                />
+              ),
+              // Customize code blocks
+              code: ({ children, className, ...props }: any) => {
+                const isInline = !className || !className.includes('language-');
+                return isInline ? (
+                  <code {...props} className="bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm" />
+                ) : (
+                  <code {...props} className="block bg-gray-100 dark:bg-gray-800 p-3 rounded text-sm overflow-x-auto" />
+                );
+              },
+              // Customize blockquotes
+              blockquote: ({ node, ...props }: any) => (
+                <blockquote {...props} className="border-l-4 border-purple-500 pl-4 italic text-gray-700 dark:text-gray-300" />
+              ),
+              // Customize lists
+              ul: ({ node, ...props }: any) => (
+                <ul {...props} className="list-disc list-inside space-y-1" />
+              ),
+              ol: ({ node, ...props }: any) => (
+                <ol {...props} className="list-decimal list-inside space-y-1" />
+              ),
+              // Customize headings
+              h1: ({ node, ...props }: any) => (
+                <h1 {...props} className="text-lg font-bold text-gray-900 dark:text-gray-100" />
+              ),
+              h2: ({ node, ...props }: any) => (
+                <h2 {...props} className="text-base font-semibold text-gray-900 dark:text-gray-100" />
+              ),
+              h3: ({ node, ...props }: any) => (
+                <h3 {...props} className="text-sm font-medium text-gray-900 dark:text-gray-100" />
+              ),
+            }}
+          >
+            {message.content}
+          </ReactMarkdown>
+        </div>
+      );
+    }
+  };
+
   return (
     <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
       <div
@@ -66,7 +127,7 @@ const Message: React.FC<MessageProps> = ({ message }) => {
       >
         <div className="flex items-start space-x-2">
           <div className="flex-1">
-            <p className="text-sm">{message.content}</p>
+            {renderMessageContent()}
             <p className={`text-xs mt-1 opacity-70 ${isUser ? 'text-primary-100' : ''}`}>
               {formatTime(message.timestamp)}
             </p>

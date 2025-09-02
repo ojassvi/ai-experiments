@@ -37,20 +37,20 @@ const Chat: React.FC = () => {
 Here are some things you can ask me to do:
 
 🎨 **Create Visual Content:**
-• "Create a poster for a beginner yoga workshop on Saturday"
-• "Design a flyer for our meditation retreat"
+- "Create a poster for a beginner yoga workshop on Saturday"
+- "Design a flyer for our meditation retreat"
 
 📱 **Send Messages:**
-• "Send a WhatsApp message about our new class schedule"
-• "Post a message about the upcoming wellness event"
+- "Send a WhatsApp message about our new class schedule"
+- "Post a message about the upcoming wellness event"
 
 📝 **Write Content:**
-• "Write a blog post about the benefits of morning yoga"
-• "Create an article about stress relief techniques"
+- "Write a blog post about the benefits of morning yoga"
+- "Create an article about stress relief techniques"
 
 🔄 **Complete Workflow:**
-• "Create everything for our summer yoga festival"
-• "Set up all content for the new meditation class"
+- "Create everything for our summer yoga festival"
+- "Set up all content for the new meditation class"
 
 Just tell me what you need, and I'll use the right tools to help you!`,
         timestamp: new Date(),
