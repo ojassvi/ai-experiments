@@ -114,12 +114,12 @@ ENCRYPTION_KEY=your-32-char-encryption-key
 ### Output
 The system automatically:
 
-2. **📱 Sends WhatsApp Message**
+1. **📱 Sends WhatsApp Message**
    - Generates casual, friendly message
    - Sends via Twilio WhatsApp Business API
    - Confirms delivery status
 
-3. **📝 Creates Website Post**
+2. **📝 Creates Website Post**
    - Generates SEO-friendly markdown content
    - Includes frontmatter (title, date, tags, description)
    - Saves to `./content/events/2025-09-15-stress-relief-breathing.md`
@@ -132,13 +132,13 @@ The system automatically:
 - **Real-time Switching**: Change providers via API endpoints
 - **Status Monitoring**: View current provider and availability
 
-### 2. `generate_whatsapp_message`
+### 1. `generate_whatsapp_message`
 - **Purpose**: Create and send WhatsApp messages
 - **Input**: Event description
 - **Output**: Sent message confirmation
 - **AI Enhancement**: Casual, engaging tone optimization
 
-### 3. `generate_markdown_post`
+### 2. `generate_markdown_post`
 - **Purpose**: Create website blog posts
 - **Input**: Event description
 - **Output**: Markdown file with frontmatter
