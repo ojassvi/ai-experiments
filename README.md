@@ -36,13 +36,11 @@ This project now uses the [AI SDK](https://ai-sdk.dev/) for seamless integration
 - **Model Flexibility**: Easy switching between different AI models
 - **Performance**: Optimized for production use
 
-For detailed AI SDK setup and usage, see [backend/README-AI-SDK.md](backend/README-AI-SDK.md).
-
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- Node.js 18+ and npm
+- Node.js 22+ and npm
 - OpenAI API key OR Perplexity AI API key (or both for fallback)
 - Twilio account (for WhatsApp Business API)
 
@@ -65,9 +63,6 @@ cp env.example .env
 ```
 
 ### 3. Start Development Servers
-
-```bashm he prot as we
-a wellll
 # From root directory
 npm run dev
 ```
@@ -198,91 +193,3 @@ social-media-workflow/
 - `GET /api/mcp/ai-status` - Get current AI provider status
 - `POST /api/mcp/ai-switch` - Switch between AI providers
 - `GET /api/health` - Health check with AI provider information
-
-### Frontend Development
-```bash
-cd frontend
-npm run dev          # Start Vite dev server
-npm run build        # Build for production
-npm run lint         # Run ESLint
-```
-
-### Backend Development
-```bash
-cd backend
-npm run dev          # Start with tsx watch
-npm run build        # Build TypeScript
-npm run start        # Run production build
-npm run lint         # Run ESLint
-```
-
-### Testing the Workflow
-
-1. **Start both servers**: `npm run dev`
-2. **Open frontend**: http://localhost:3000
-3. **Configure API keys** in Settings page
-4. **Test workflow** in Chat page
-5. **Check generated files** in `./content/events/`
-
-## 🚀 Production Deployment
-
-### Frontend
-```bash
-cd frontend
-npm run build
-# Deploy dist/ folder to your hosting service
-```
-
-### Backend
-```bash
-cd backend
-npm run build
-npm run start
-# Use PM2 or similar for process management
-```
-
-### Environment Variables
-Ensure all required environment variables are set in production:
-- `AI_PROVIDER` (openai or perplexity)
-- `AI_FALLBACK_PROVIDER` (fallback provider)
-- `OPENAI_API_KEY` (if using OpenAI)
-- `PERPLEXITY_API_KEY` (if using Perplexity AI)
-- `ENCRYPTION_KEY`
-
-## 🔮 Future Enhancements
-
-- **Instagram Integration**: Auto-post to Instagram
-- **Email Marketing**: Newsletter integration
-- **Analytics Dashboard**: Track content performance
-- **Template Library**: Pre-designed poster templates
-- **Bulk Operations**: Send to multiple contacts
-- **Scheduling**: Plan content in advance
-- **A/B Testing**: Test different message variations
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests if applicable
-5. Submit a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🆘 Support
-
-- **Issues**: Create a GitHub issue
-- **Documentation**: Check this README and inline code comments
-- **API Issues**: Check respective API provider documentation
-
-## 🙏 Acknowledgments
-
-- OpenAI for GPT-4 integration
-- React and Vite communities
-- Tailwind CSS for beautiful UI components
-
----
-
-**Built with ❤️ for yoga studios and wellness communities**
