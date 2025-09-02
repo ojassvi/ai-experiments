@@ -1,7 +1,7 @@
 import React from 'react';
 import { Outlet, Link, useLocation } from 'react-router-dom';
 import { Moon, Sun, Settings, MessageCircle } from 'lucide-react';
-import { useTheme } from '../hooks/useTheme';
+import { useTheme } from '../hooks/use-theme';
 
 const Layout: React.FC = () => {
   const { setTheme, isDark } = useTheme();

@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { SettingsService } from '../services/settingsService';
+import { SettingsService } from '../services/settings-service';
 
 const router = Router();
 const settingsService = new SettingsService();

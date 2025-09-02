@@ -1,5 +1,5 @@
 import twilio from 'twilio';
-import { SettingsService } from './settingsService';
+import { SettingsService } from './settings-service';
 
 export class WhatsAppService {
   private client: twilio.Twilio | null;

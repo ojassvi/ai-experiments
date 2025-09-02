@@ -89,12 +89,19 @@ const Settings: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="card">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
-          API Configuration
-        </h2>
-        <p className="text-gray-600 dark:text-gray-400 mb-6">
-          Configure your API keys and credentials for WhatsApp Business and Canva integration.
-        </p>
+        <div className="flex items-center space-x-3 mb-6">
+          <div className="w-12 h-12 bg-gradient-to-br from-purple-500 to-blue-600 rounded-xl flex items-center justify-center">
+            <span className="text-white text-xl">⚙️</span>
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              API Configuration
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400">
+              Configure your API keys and credentials for WhatsApp Business and Canva integration.
+            </p>
+          </div>
+        </div>
 
         {/* WhatsApp Configuration */}
         <div className="space-y-6">

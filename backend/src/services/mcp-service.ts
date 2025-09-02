@@ -1,8 +1,8 @@
-import { AIService, AIProvider } from './aiService';
-import { CanvaService } from './canvaService';
-import { WhatsAppService } from './whatsappService';
-import { MarkdownService } from './markdownService';
-import { SettingsService } from './settingsService';
+import { AIService, AIProvider } from './ai-service';
+import { CanvaService } from './canva-service';
+import { WhatsAppService } from './whatsapp-service';
+import { MarkdownService } from './markdown-service';
+import { SettingsService } from './settings-service';
 
 export class MCPService {
   private aiService: AIService;

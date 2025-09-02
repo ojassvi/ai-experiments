@@ -1,6 +1,6 @@
 import { Router, Request, Response } from 'express';
-import { SettingsService } from '../services/settingsService';
-import { MCPService } from '../services/mcpService';
+import { SettingsService } from '../services/settings-service';
+import { MCPService } from '../services/mcp-service';
 
 const router = Router();
 const settingsService = new SettingsService();

@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { MCPService } from '../services/mcpService';
+import { MCPService } from '../services/mcp-service';
 import { TaskResult } from '../types';
 
 const router = Router();

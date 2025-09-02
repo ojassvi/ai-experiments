@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
-import Layout from './components/Layout';
-import Chat from './pages/Chat';
-import Settings from './pages/Settings';
+import Layout from './components/layout';
+import Chat from './pages/chat';
+import Settings from './pages/settings';
 
 function App() {
   return (
