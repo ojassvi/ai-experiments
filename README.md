@@ -5,7 +5,7 @@ A comprehensive MCP (Model Context Protocol) client + agent workflow that automa
 ## 🎯 Features
 
 
-- **📱 WhatsApp Business API**: Send personalized messages to your community
+- **📱 WhatsApp Business API**: Send personalized messages to your community *(Not functional at this time)*
 - **📝 Website Content**: Generate SEO-friendly markdown posts with frontmatter
 - **🤖 AI-Powered**: Uses AI SDK with OpenAI GPT-4 or Perplexity AI for intelligent content generation
 - **🌓 Dark/Light Mode**: Beautiful, responsive UI with system preference detection
