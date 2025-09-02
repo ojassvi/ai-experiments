@@ -116,7 +116,7 @@ Just tell me what you need, and I'll use the right tools to help you!`,
 
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto my-4 pb-4">
       <div className="card">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center space-x-3">
@@ -155,7 +155,7 @@ Just tell me what you need, and I'll use the right tools to help you!`,
         </div>
 
         {/* Messages */}
-        <div className="space-y-4 mb-6 max-h-96 overflow-y-auto">
+        <div className="space-y-4 mb-6 min-h-96 overflow-y-auto">
           {messages.length === 0 ? (
             <div className="text-center py-12 text-gray-600 dark:text-gray-400">
               <div className="w-20 h-20 bg-gradient-to-br from-purple-100 to-blue-100 dark:from-purple-900/20 dark:to-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -211,7 +211,7 @@ Just tell me what you need, and I'll use the right tools to help you!`,
         </div>
 
         {/* Input Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4 mt-auto">
           <div className="relative">
             <input
               type="text"
@@ -226,31 +226,13 @@ Just tell me what you need, and I'll use the right tools to help you!`,
                 {isProcessing ? (
                   <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-purple-500"></div>
                 ) : (
-                  <Send className="w-6 h-6" />
+                  <Send className="w-6 h-6" onClick={handleSubmit} />
                 )}
               </div>
             </div>
           </div>
           
-          <div className="flex items-center justify-between">
-            <button
-              type="submit"
-              disabled={!input.trim() || isProcessing || !isConnected}
-              className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 disabled:from-gray-400 disabled:to-gray-500 text-white px-6 py-3 rounded-xl font-medium transition-all duration-200 flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 disabled:transform-none disabled:shadow-none"
-            >
-              {isProcessing ? (
-                <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                  <span>Processing...</span>
-                </>
-              ) : (
-                <>
-                  <Send className="w-4 h-4" />
-                  <span>Create Content</span>
-                </>
-              )}
-            </button>
-            
+          <div className="flex items-center justify-between">            
             {!isConnected && (
               <div className="flex items-center space-x-2 text-amber-600 dark:text-amber-400">
                 <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
