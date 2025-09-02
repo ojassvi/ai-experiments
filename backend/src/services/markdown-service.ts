@@ -25,8 +25,23 @@ export class MarkdownService {
       // Parse the markdown content to extract frontmatter
       const parsed = matter(content);
       
-      // Generate filename from title or description
-      const filename = this.generateFilename(parsed.data.title || eventDescription);
+      // Generate filename from title or create a fallback
+      let filenameSource = parsed.data.title;
+      
+      // If no title or title is too long, create a better fallback
+      if (!filenameSource || filenameSource.length > 200) {
+        // Extract first few words from description for a meaningful filename
+        const words = eventDescription
+          .toLowerCase()
+          .replace(/[^a-z0-9\s]/g, ' ')
+          .split(/\s+/)
+          .filter(word => word.length > 2)
+          .slice(0, 5); // Take first 5 meaningful words
+        
+        filenameSource = words.length > 0 ? words.join('-') : 'yoga-event';
+      }
+      
+      const filename = this.generateFilename(filenameSource);
       const filePath = path.join(this.contentDir, filename);
       
       // Ensure the content directory exists
@@ -54,12 +69,23 @@ export class MarkdownService {
     const dateStr = now.toISOString().split('T')[0]; // YYYY-MM-DD
     
     // Clean the title for filename
-    const cleanTitle = title
+    let cleanTitle = title
       .toLowerCase()
       .replace(/[^a-z0-9\s-]/g, '') // Remove special characters
       .replace(/\s+/g, '-') // Replace spaces with hyphens
       .replace(/-+/g, '-') // Replace multiple hyphens with single
       .trim();
+    
+    // Limit filename length to prevent ENAMETOOLONG error
+    // Most filesystems have a limit of 255 characters for filename
+    // We'll use a more conservative limit of 100 characters for the title part
+    const maxTitleLength = 100;
+    if (cleanTitle.length > maxTitleLength) {
+      // Truncate and add a hash to make it unique
+      const truncated = cleanTitle.substring(0, maxTitleLength - 8); // Leave room for hash
+      const hash = Math.random().toString(36).substring(2, 8); // 6 character hash
+      cleanTitle = `${truncated}-${hash}`;
+    }
     
     return `${dateStr}-${cleanTitle}.md`;
   }
