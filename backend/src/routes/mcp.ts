@@ -23,91 +23,16 @@ router.post('/chat', async (req: Request, res: Response) => {
 
     console.log(`🤖 Processing MCP request: ${message}`);
 
-    // Initialize tasks
-    const tasks: TaskResult[] = [
-      {
-        id: '1',
-        type: 'create_poster',
-        status: 'processing',
-      },
-      {
-        id: '2',
-        type: 'generate_whatsapp_message',
-        status: 'processing',
-      },
-      {
-        id: '3',
-        type: 'generate_markdown_post',
-        status: 'processing',
-      },
-    ];
-
-    // Send initial response
-    res.writeHead(200, {
-      'Content-Type': 'application/json',
-      'Transfer-Encoding': 'chunked',
+    // Use intelligent task routing based on user intent
+    const result = await getMCPService().handleUserRequest(message);
+    
+    // Send response
+    res.json({
+      message: result.response,
+      tasks: result.tasks || [],
+      metadata: result.metadata || {},
+      timestamp: new Date().toISOString(),
     });
-
-    // Process tasks asynchronously
-    const processTasks = async () => {
-      try {
-        // Task 1: Create Poster
-        console.log('🎨 Starting poster creation...');
-        const posterResult = await getMCPService().createPoster(message);
-        tasks[0].status = 'completed';
-        tasks[0].metadata = { posterUrl: posterResult.url };
-        console.log('✅ Poster created successfully');
-
-        // Task 2: Generate WhatsApp Message
-        console.log('📱 Starting WhatsApp message generation...');
-        const whatsappResult = await getMCPService().generateWhatsAppMessage(message);
-        tasks[1].status = 'completed';
-        tasks[1].metadata = { whatsappMessage: whatsappResult.message };
-        console.log('✅ WhatsApp message generated and sent');
-
-        // Task 3: Generate Markdown Post
-        console.log('📝 Starting markdown post generation...');
-        const markdownResult = await getMCPService().generateMarkdownPost(message);
-        tasks[2].status = 'completed';
-        tasks[2].metadata = { markdownFile: markdownResult.filename };
-        console.log('✅ Markdown post generated');
-
-        // Send final response
-        const finalResponse = {
-          message: `🎉 Content workflow completed successfully! I've created:\n\n` +
-            `✅ **Poster**: [View your poster](${posterResult.url})\n` +
-            `✅ **WhatsApp Message**: Sent to your configured number\n` +
-            `✅ **Website Post**: Created as ${markdownResult.filename}\n\n` +
-            `All content has been generated and distributed across your channels.`,
-          tasks,
-        };
-
-        res.write(JSON.stringify(finalResponse));
-        res.end();
-
-      } catch (error) {
-        console.error('❌ Error processing tasks:', error);
-        
-        // Mark failed tasks
-        tasks.forEach(task => {
-          if (task.status === 'processing') {
-            task.status = 'failed';
-            task.error = error instanceof Error ? error.message : 'Unknown error occurred';
-          }
-        });
-
-        const errorResponse = {
-          message: '❌ Some tasks failed to complete. Please check the task details below.',
-          tasks,
-        };
-
-        res.write(JSON.stringify(errorResponse));
-        res.end();
-      }
-    };
-
-    // Start processing
-    processTasks();
 
   } catch (error) {
     console.error('❌ MCP chat error:', error);
@@ -208,6 +133,46 @@ router.post('/ai-switch', (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error switching AI provider:', error);
     res.status(500).json({ error: 'Failed to switch AI provider' });
+  }
+});
+
+// Complete workflow endpoint
+router.post('/workflow', async (req: Request, res: Response) => {
+  try {
+    const { description } = req.body;
+
+    if (!description || typeof description !== 'string') {
+      return res.status(400).json({ error: 'Description is required and must be a string' });
+    }
+
+    console.log(`🔄 Processing complete workflow for: ${description}`);
+
+    const result = await getMCPService().processWorkflow(description);
+    
+    res.json({
+      message: `🎉 Complete workflow completed successfully! I've created:\n\n` +
+        `✅ **Poster**: [View your poster](${result.poster.url})\n` +
+        `✅ **WhatsApp Message**: Sent to your configured number\n` +
+        `✅ **Website Post**: Created as ${result.markdown.filename}\n\n` +
+        `All content has been generated and distributed across your channels.`,
+      tasks: [
+        { type: 'poster', status: 'completed', url: result.poster.url },
+        { type: 'whatsapp', status: 'completed', message: 'Message sent successfully' },
+        { type: 'blog', status: 'completed', filename: result.markdown.filename }
+      ],
+      metadata: {
+        posterUrl: result.poster.url,
+        markdownFile: result.markdown.filename
+      },
+      timestamp: new Date().toISOString(),
+    });
+
+  } catch (error) {
+    console.error('❌ Workflow error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      message: 'Failed to process workflow. Please try again.',
+    });
   }
 });
 

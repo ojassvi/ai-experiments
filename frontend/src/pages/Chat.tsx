@@ -26,6 +26,39 @@ const Chat: React.FC = () => {
     }
   }, [isConnected]);
 
+  useEffect(() => {
+    // Add welcome message on first load
+    if (messages.length === 0) {
+      const welcomeMessage: MessageType = {
+        id: 'welcome',
+        type: 'agent',
+        content: `👋 Welcome to your Content Workflow Assistant! I'm here to help you create amazing content for your yoga studio.
+
+Here are some things you can ask me to do:
+
+🎨 **Create Visual Content:**
+• "Create a poster for a beginner yoga workshop on Saturday"
+• "Design a flyer for our meditation retreat"
+
+📱 **Send Messages:**
+• "Send a WhatsApp message about our new class schedule"
+• "Post a message about the upcoming wellness event"
+
+📝 **Write Content:**
+• "Write a blog post about the benefits of morning yoga"
+• "Create an article about stress relief techniques"
+
+🔄 **Complete Workflow:**
+• "Create everything for our summer yoga festival"
+• "Set up all content for the new meditation class"
+
+Just tell me what you need, and I'll use the right tools to help you!`,
+        timestamp: new Date(),
+      };
+      setMessages([welcomeMessage]);
+    }
+  }, []);
+
   const fetchAIStatus = async () => {
     try {
       const response = await fetch('/api/mcp/ai-status');
@@ -62,6 +95,7 @@ const Chat: React.FC = () => {
         content: response.message,
         timestamp: new Date(),
         tasks: response.tasks,
+        metadata: response.metadata,
       };
 
       setMessages(prev => [...prev, agentMessage]);

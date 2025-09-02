@@ -1,8 +1,8 @@
-import OpenAI from 'openai';
-import { generateText } from 'ai';
-import { perplexity } from '@ai-sdk/perplexity';
+import OpenAI from "openai";
+import { generateText } from "ai";
+import { perplexity } from "@ai-sdk/perplexity";
 
-export type AIProvider = 'openai' | 'perplexity';
+export type AIProvider = "openai" | "perplexity";
 
 export interface AIServiceConfig {
   provider: AIProvider;
@@ -29,24 +29,33 @@ export class AIService {
         this.openai = new OpenAI({
           apiKey: this.config.openaiApiKey,
         });
-        console.log('✅ OpenAI service initialized');
+        console.log("✅ OpenAI service initialized");
       } catch (error) {
-        console.warn('⚠️ Failed to initialize OpenAI:', error);
+        console.warn("⚠️ Failed to initialize OpenAI:", error);
       }
     }
 
     // Validate current provider
     if (!this.isProviderAvailable(this.currentProvider)) {
-      if (this.config.fallbackProvider && this.isProviderAvailable(this.config.fallbackProvider)) {
-        console.log(`⚠️ Primary provider ${this.currentProvider} not available, falling back to ${this.config.fallbackProvider}`);
+      if (
+        this.config.fallbackProvider &&
+        this.isProviderAvailable(this.config.fallbackProvider)
+      ) {
+        console.log(
+          `⚠️ Primary provider ${this.currentProvider} not available, falling back to ${this.config.fallbackProvider}`
+        );
         this.currentProvider = this.config.fallbackProvider;
       } else {
         const availableProvider = this.getAvailableProvider();
         if (availableProvider) {
-          console.log(`⚠️ No configured providers available, using ${availableProvider}`);
+          console.log(
+            `⚠️ No configured providers available, using ${availableProvider}`
+          );
           this.currentProvider = availableProvider;
         } else {
-          throw new Error('No AI providers available. Please configure OpenAI or Perplexity API keys.');
+          throw new Error(
+            "No AI providers available. Please configure OpenAI or Perplexity API keys."
+          );
         }
       }
     }
@@ -55,58 +64,73 @@ export class AIService {
   private isProviderAvailable(provider: AIProvider): boolean {
     switch (provider) {
       case 'openai':
-        return this.config.openaiApiKey !== undefined && this.openai !== null;
+        const openaiKey = this.config.openaiApiKey;
+        const hasValidOpenAIKey = Boolean(openaiKey && 
+          openaiKey !== 'your_openai_api_key_here' && 
+          openaiKey !== 'your_openai_api_key_here' &&
+          this.openai !== null);
+        return hasValidOpenAIKey;
       case 'perplexity':
-        return this.config.perplexityApiKey !== undefined;
+        const perplexityKey = this.config.perplexityApiKey;
+        const hasValidPerplexityKey = Boolean(perplexityKey && 
+          perplexityKey !== 'your_perplexity_api_key_here' &&
+          perplexityKey !== 'your_perplexity_api_key_here');
+        return hasValidPerplexityKey;
       default:
         return false;
     }
   }
 
   private getAvailableProvider(): AIProvider | null {
-    if (this.config.openaiApiKey && this.openai) return 'openai';
-    if (this.config.perplexityApiKey) return 'perplexity';
+    if (this.config.openaiApiKey && this.openai) return "openai";
+    if (this.config.perplexityApiKey) return "perplexity";
     return null;
   }
 
   async generateContent(prompt: string): Promise<string> {
     try {
       switch (this.currentProvider) {
-        case 'openai':
+        case "openai":
           return await this.generateWithOpenAI(prompt);
-        case 'perplexity':
+        case "perplexity":
           return await this.generateWithPerplexity(prompt);
         default:
           throw new Error(`Unsupported AI provider: ${this.currentProvider}`);
       }
     } catch (error) {
       console.error(`Error with ${this.currentProvider}:`, error);
-      
+
       // Try fallback provider
-      if (this.config.fallbackProvider && this.currentProvider !== this.config.fallbackProvider) {
-        console.log(`🔄 Trying fallback provider: ${this.config.fallbackProvider}`);
+      if (
+        this.config.fallbackProvider &&
+        this.currentProvider !== this.config.fallbackProvider
+      ) {
+        console.log(
+          `🔄 Trying fallback provider: ${this.config.fallbackProvider}`
+        );
         this.currentProvider = this.config.fallbackProvider;
         return await this.generateContent(prompt);
       }
-      
+
       throw error;
     }
   }
 
   private async generateWithOpenAI(prompt: string): Promise<string> {
     if (!this.openai) {
-      throw new Error('OpenAI service not initialized');
+      throw new Error("OpenAI service not initialized");
     }
 
     const completion = await this.openai.chat.completions.create({
-      model: 'gpt-4',
+      model: "gpt-4",
       messages: [
         {
-          role: 'system',
-          content: 'You are a professional content creator specializing in yoga and wellness content. Create engaging, informative, and well-structured content based on the user\'s requirements.',
+          role: "system",
+          content:
+            "You are a professional content creator specializing in yoga and wellness content. Create engaging, informative, and well-structured content based on the user's requirements.",
         },
         {
-          role: 'user',
+          role: "user",
           content: prompt,
         },
       ],
@@ -116,7 +140,7 @@ export class AIService {
 
     const content = completion.choices[0]?.message?.content;
     if (!content) {
-      throw new Error('No content generated from OpenAI');
+      throw new Error("No content generated from OpenAI");
     }
 
     return content;
@@ -124,7 +148,7 @@ export class AIService {
 
   private async generateWithPerplexity(prompt: string): Promise<string> {
     if (!this.config.perplexityApiKey) {
-      throw new Error('Perplexity API key not configured');
+      throw new Error("Perplexity API key not configured");
     }
 
     try {
@@ -133,7 +157,7 @@ export class AIService {
       process.env.PERPLEXITY_API_KEY = this.config.perplexityApiKey;
 
       const { text } = await generateText({
-        model: perplexity('llama-3.1-sonar-small-128k-online'),
+        model: perplexity("sonar"),
         prompt: `You are a professional content creator specializing in yoga and wellness content. Create engaging, informative, and well-structured content based on the user's requirements.
 
 User request: ${prompt}`,
@@ -147,13 +171,17 @@ User request: ${prompt}`,
       }
 
       if (!text) {
-        throw new Error('No content generated from Perplexity AI');
+        throw new Error("No content generated from Perplexity AI");
       }
 
       return text;
     } catch (error) {
-      console.error('Perplexity AI generation error:', error);
-      throw new Error(`Failed to generate content with Perplexity: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      console.error("Perplexity AI generation error:", error);
+      throw new Error(
+        `Failed to generate content with Perplexity: ${
+          error instanceof Error ? error.message : "Unknown error"
+        }`
+      );
     }
   }
 
@@ -178,27 +206,33 @@ User request: ${prompt}`,
     Make it professional, inviting, and wellness-focused.`;
 
     const content = await this.generateContent(prompt);
-    
+
     try {
       // Try to parse as JSON
       const parsed = JSON.parse(content);
-      
+
       // Validate required fields
-      if (!parsed.title || !parsed.subtitle || !parsed.details || !parsed.colors || !parsed.layout) {
-        throw new Error('Invalid JSON structure');
+      if (
+        !parsed.title ||
+        !parsed.subtitle ||
+        !parsed.details ||
+        !parsed.colors ||
+        !parsed.layout
+      ) {
+        throw new Error("Invalid JSON structure");
       }
-      
+
       return parsed;
     } catch (parseError) {
-      console.error('Failed to parse AI response as JSON:', parseError);
-      
+      console.error("Failed to parse AI response as JSON:", parseError);
+
       // Fallback: create a basic structure
       return {
-        title: 'Yoga Workshop',
-        subtitle: 'Join us for a transformative experience',
+        title: "Yoga Workshop",
+        subtitle: "Join us for a transformative experience",
         details: eventDescription.substring(0, 120),
-        colors: ['#4F46E5', '#10B981', '#F59E0B'],
-        layout: 'centered with calming imagery',
+        colors: ["#4F46E5", "#10B981", "#F59E0B"],
+        layout: "centered with calming imagery",
       };
     }
   }

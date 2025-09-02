@@ -18,11 +18,23 @@ export interface MessageType {
   content: string;
   timestamp: Date;
   tasks?: TaskResult[];
+  metadata?: {
+    posterUrl?: string;
+    whatsappMessage?: string;
+    markdownFile?: string;
+    [key: string]: string | number | boolean | undefined;
+  };
 }
 
 export interface MCPResponse {
   message: string;
   tasks: TaskResult[];
+  metadata?: {
+    posterUrl?: string;
+    whatsappMessage?: string;
+    markdownFile?: string;
+    [key: string]: string | number | boolean | undefined;
+  };
 }
 
 export interface Settings {
